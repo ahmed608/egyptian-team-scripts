@@ -1,4 +1,4 @@
-# rp-radio
+# rp-radio ui v1 {new}
 An in-game radio which makes use of the mumble-voip radio API for FiveM
 
 ### Exports
@@ -40,6 +40,6 @@ Setters
 | Radio.Toggle | Opens/close the radio            | none                   |
 | Radio.Set    | Set if player has a radio or not | bool                   |
 
-### Preview
+### Preview new
 
-- [MP4](https://imgur.com/bAT0mls)
+- [MP4](https://youtu.be/6m-_WwBMlbw)
