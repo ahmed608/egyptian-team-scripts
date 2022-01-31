@@ -1,0 +1,157 @@
+#container {
+
+ height: 500px;
+ width: 500px;
+ position: relative;
+ bottom: 170px;
+ left: 300px;
+}
+    
+.mano{
+    position: relative;
+    top: 550px;
+    left: 100px;
+
+}    
+    
+
+
+
+
+.done {
+    width: 40px;
+    height: 50px;
+    margin: 3px ;
+    border-radius: 10px;
+    color: #EAEAEA;
+    font-size: 10px;
+    text-align: center;
+    padding-top: 15px;
+    background-color: #283858;
+    box-sizing: border-box;
+    user-select: none;
+    position: relative;
+    top:253.3px ;
+    left: 37px;
+    
+}
+
+.done1 {
+    width: 40px;
+    height: 52px;
+    margin: 3px ;
+    border-radius: 10px;
+    color: #000000;
+    font-size: 10px;
+    text-align: center;
+    padding-top: 20px;
+    background-color: #438843;
+    box-sizing: border-box;
+    user-select: none;
+    position: relative;
+    top: 200px;
+    right: 47px;
+    
+}
+
+
+.done2 {
+    width: 40px;
+    height: 50px;
+    margin: 3px ;
+    border-radius: 10px;
+    color: #EAEAEA;
+    background-color: #ee0606;
+    box-sizing: border-box;
+    user-select: none;
+    position: relative;
+    top: 212px;
+    right: 47px;
+    text-align: center;
+    padding: 10px;
+}
+
+.done3{
+    width: 40px;
+    height: 50px;
+    margin: 3px ;
+    border-radius: 10px;
+    color: #EAEAEA;
+    background-color: #328d72;
+    box-sizing: border-box;
+    user-select: none;
+    position: relative;
+    top: 159px;
+    left: 37px;
+    text-align: center;
+    padding: 10px;
+
+}
+
+.done4{
+    width: 40px;
+    height: 50px;
+    margin: 3px ;
+    border-radius: 10px;
+    color: #EAEAEA;
+    background-color: #34aabe;
+    box-sizing: border-box;
+    user-select: none;
+    position: relative;
+    top: 106px;
+    left: -5px;
+    text-align: center;
+    padding: 10px;
+
+}
+
+.manotalk{
+    width: 40px;
+    height: 50px;
+    margin: 3px ;
+    border-radius: 10px;
+    color: #EAEAEA;
+    background-color: #55bd2d;
+    box-sizing: border-box;
+    user-select: none;
+    position: relative;
+    top: -14px;
+    left: -5px;
+    text-align: center;
+    padding: 10px;
+}
+
+.watch-mano{
+background-color: rgb(8, 83, 58);
+width: 170px;
+height: 150px;
+position: relative;
+right: 69px;
+bottom:249px;
+border-radius: 10px;
+
+}
+
+.done:hover {
+    background-color: #ce9121;
+}
+
+.done1:hover {
+    background-color: #33ff00;
+}
+
+.done2:hover {
+    background-color: #383f4e;
+}
+
+.done3:hover{
+    background-color: rgba(7, 255, 90, 0.726);
+}
+
+.done4:hover{
+    background-color: rgba(190, 154, 36, 0.795);
+}
+
+.manotalk:hover{
+    background-color: peru;
+}
