@@ -15,16 +15,9 @@ files {
     'NUI/style.css',
     'NUI/reset.css',
     'NUI/script.js',
-    'NUI/assests/cap.png',
-    'NUI/assests/glasses.png',
-    'NUI/assests/mask.png',
-    'NUI/assests/necklace.png',
-    'NUI/assests/pants.png',
-    'NUI/assests/shoe.png',
-	"NUI/on.ogg",
-	"NUI/off.ogg",
-    'NUI/assests/tshirt.png',
-    'index1.html'
+    'NUI/on.ogg',
+    'NUI/off.ogg',
+   
 }
 
 
