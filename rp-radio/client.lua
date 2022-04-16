@@ -1,3 +1,20 @@
+ESX = nil
+
+Citizen.CreateThread(function()
+	while ESX == nil do
+		TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+		Citizen.Wait(0)
+	end
+
+	while ESX.GetPlayerData().job == nil do
+		Citizen.Wait(10)
+	end
+
+	ESX.PlayerData = ESX.GetPlayerData()
+
+end)
+
+
 local Radio = {
     Has = false,
     Open = false,
@@ -29,81 +46,118 @@ Radio.Labels = {
 	{ "FRZL_RADIO_INPUT", "Enter Frequency" },
 }
 
-Radio.Commands = {
-    {
-        Enabled = false, -- Add a command to be able to open/close the radio
-        Name = "radio", -- Command name
-        Help = "Toggle hand radio", -- Command help shown in chatbox when typing the command
-        Params = {},
-        Handler = function(src, args, raw)
-            local playerPed = PlayerPedId()
-            local isFalling = IsPedFalling(playerPed)
-            local isDead = IsEntityDead(playerPed)
 
-            if not isFalling and Radio.Enabled and Radio.Has and not isDead then
-                Radio:Toggle(not Radio.Open)
-            elseif (Radio.Open or Radio.On) and ((not Radio.Enabled) or (not Radio.Has) or isDead) then
-                Radio:Toggle(false)
-                Radio.On = false
-                Radio:Remove()
-                exports["mumble-voip"]:SetMumbleProperty("radioEnabled", false)
-            elseif Radio.Open and isFalling then
-                Radio:Toggle(false)
-            end            
-        end,
-    },
-    {
-        Enabled = false, -- Add a command to choose radio frequency
-        Name = "frequency", -- Command name
-        Help = "add num of the channel ", -- Command help shown in chatbox when typing the command
-        Params = {
-            {name = "number", "Enter frequency"}
-        },
-        Handler = function(src, args, raw)
-            if Radio.Has then
-                if args[1] then
-                    local newFrequency = tonumber(args[1])
-                    if newFrequency then
-                        local minFrequency = radioConfig.Frequency.List[1]
-                        if newFrequency >= minFrequency and newFrequency <= radioConfig.Frequency.List[#radioConfig.Frequency.List] and newFrequency == math.floor(newFrequency) then
-                            if not radioConfig.Frequency.Private[newFrequency] or radioConfig.Frequency.Access[newFrequency] then
-                                local idx = nil
-                    
-                                for i = 1, #radioConfig.Frequency.List do
-                                    if radioConfig.Frequency.List[i] == newFrequency then
-                                        idx = i
-                                        break
-                                    end
-                                end
-                    
-                                if idx ~= nil then
-                                    if Radio.Enabled then
-                                        Radio:Remove()
-                                    end
 
-                                    radioConfig.Frequency.CurrentIndex = idx
-                                    radioConfig.Frequency.Current = newFrequency
+function hasradio(cb)
+    cb(true)
+  end
 
-                                    if Radio.On then
-                                        Radio:Add(radioConfig.Frequency.Current)
-                                    end
-                                end
-                            end
-                        end
-                    end
-                end                    
+function hasradio(cb)
+    if (ESX == nil) then return cb(0) end
+    ESX.TriggerServerCallback('gcphone:getItemAmountt', function(qtty)
+      cb(qtty > 0)
+    end, 'radio')
+  end
+
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(0)
+
+        if IsControlJustReleased(0, 56) then
+            ESX.TriggerServerCallback('konarflightjob:haveItem', function(haveItem)
+            if haveItem then
+               TriggerServerEvent("radiowithbutton")
             end
-        end,
-    },
-}
+          end, radio)
+        end
+        -- hasPhone(function (hasPhone)
+        --     if hasPhone == true and IsControlJustReleased(0, 56) then
+        --         TriggerEvent("Radio.Set", source, true)
+        --         TriggerEvent("Radio.Toggle", source)
+              
+        --     elseif hasPhone == false then
+              
+        --     end
+        --   end)
 
-
-for i = 1, #Radio.Commands do
-    if Radio.Commands[i].Enabled then
-        RegisterCommand(Radio.Commands[i].Name, Radio.Commands[i].Handler, false)
-        TriggerEvent("chat:addSuggestion", "/" .. Radio.Commands[i].Name, Radio.Commands[i].Help, Radio.Commands[i].Params)
     end
-end
+end)
+
+-- Radio.Commands = {
+--     {
+--         Enabled = false, -- Add a command to be able to open/close the radio
+--         Name = "radio", -- Command name
+--         Help = "Toggle hand radio", -- Command help shown in chatbox when typing the command
+--         Params = {},
+--         Handler = function(src, args, raw)
+--             local playerPed = PlayerPedId()
+--             local isFalling = IsPedFalling(playerPed)
+--             local isDead = IsEntityDead(playerPed)
+
+--             if not isFalling and Radio.Enabled and Radio.Has and not isDead then
+--                 Radio:Toggle(not Radio.Open)
+--             elseif (Radio.Open or Radio.On) and ((not Radio.Enabled) or (not Radio.Has) or isDead) then
+--                 Radio:Toggle(false)
+--                 Radio.On = false
+--                 Radio:Remove()
+--                 exports["mumble-voip"]:SetMumbleProperty("radioEnabled", false)
+--             elseif Radio.Open and isFalling then
+--                 Radio:Toggle(false)
+--             end            
+--         end,
+--     },
+--     {
+--         Enabled = false, -- Add a command to choose radio frequency
+--         Name = "frequency", -- Command name
+--         Help = "add num of the channel ", -- Command help shown in chatbox when typing the command
+--         Params = {
+--             {name = "number", "Enter frequency"}
+--         },
+--         Handler = function(src, args, raw)
+--             if Radio.Has then
+--                 if args[1] then
+--                     local newFrequency = tonumber(args[1])
+--                     if newFrequency then
+--                         local minFrequency = radioConfig.Frequency.List[1]
+--                         if newFrequency >= minFrequency and newFrequency <= radioConfig.Frequency.List[#radioConfig.Frequency.List] and newFrequency == math.floor(newFrequency) then
+--                             if not radioConfig.Frequency.Private[newFrequency] or radioConfig.Frequency.Access[newFrequency] then
+--                                 local idx = nil
+                    
+--                                 for i = 1, #radioConfig.Frequency.List do
+--                                     if radioConfig.Frequency.List[i] == newFrequency then
+--                                         idx = i
+--                                         break
+--                                     end
+--                                 end
+                    
+--                                 if idx ~= nil then
+--                                     if Radio.Enabled then
+--                                         Radio:Remove()
+--                                     end
+
+--                                     radioConfig.Frequency.CurrentIndex = idx
+--                                     radioConfig.Frequency.Current = newFrequency
+
+--                                     if Radio.On then
+--                                         Radio:Add(radioConfig.Frequency.Current)
+--                                     end
+--                                 end
+--                             end
+--                         end
+--                     end
+--                 end                    
+--             end
+--         end,
+--     },
+-- }
+
+
+-- for i = 1, #Radio.Commands do
+--     if Radio.Commands[i].Enabled then
+--         RegisterCommand(Radio.Commands[i].Name, Radio.Commands[i].Handler, false)
+--         TriggerEvent("chat:addSuggestion", "/" .. Radio.Commands[i].Name, Radio.Commands[i].Help, Radio.Commands[i].Params)
+--     end
+-- end
 
 -- Create/Destroy handheld radio object
 function Radio:Toggle(toggle)
@@ -624,47 +678,54 @@ end)
 
 RegisterNUICallback('datasend1', function(data, cd)
 
-    radioConfig.Controls.Input.Pressed = true
-    Citizen.CreateThread(function()
-        DisplayOnscreenKeyboard(1, Radio.Labels[3][1], "", radioConfig.Frequency.Current, "", "", "", 3)
+    local playerPed = PlayerPedId()
+    
+    local minFrequency = radioConfig.Frequency.List[1]
+    if not radioConfig.Controls.Input.Pressed then
+        radioConfig.Controls.Input.Pressed = true
+            
+               DisplayOnscreenKeyboard(1, Radio.Labels[3][1], "", radioConfig.Frequency.Current, "", "", "", 3)
 
-        while UpdateOnscreenKeyboard() ~= 1 and UpdateOnscreenKeyboard() ~= 2 do
-            Citizen.Wait(150)
-        end
+                while UpdateOnscreenKeyboard() ~= 1 and UpdateOnscreenKeyboard() ~= 2 do
+                    Citizen.Wait(150)
+                end
 
-        local input = nil
+                local input = nil
 
-        if UpdateOnscreenKeyboard() ~= 2 then
-            input = GetOnscreenKeyboardResult()
-        end
+                if UpdateOnscreenKeyboard() ~= 2 then
+                    input = GetOnscreenKeyboardResult()
+                end
 
-        Citizen.Wait(500)
-        
-        input = tonumber(input)
+                Citizen.Wait(500)
+                
+                input = tonumber(input)
 
-        if input ~= nil then
-            if input >= minFrequency and input <= radioConfig.Frequency.List[#radioConfig.Frequency.List] and input == math.floor(input) then
-                if not radioConfig.Frequency.Private[input] or radioConfig.Frequency.Access[input] then
-                    local idx = nil
+                if input ~= nil then
+                    if input >= minFrequency and input <= radioConfig.Frequency.List[#radioConfig.Frequency.List] and input == math.floor(input) then
+                        if not radioConfig.Frequency.Private[input] or radioConfig.Frequency.Access[input] then
+                            local idx = nil
 
-                    for i = 1, #radioConfig.Frequency.List do
-                        if radioConfig.Frequency.List[i] == input then
-                            idx = i
-                            break
+                            for i = 1, #radioConfig.Frequency.List do
+                                if radioConfig.Frequency.List[i] == input then
+                                    idx = i
+                                    break
+                                end
+                            end
+
+                            if idx ~= nil then
+                                radioConfig.Frequency.CurrentIndex = idx
+                                radioConfig.Frequency.Current = input
+                            end
                         end
                     end
-
-                    if idx ~= nil then
-                        radioConfig.Frequency.CurrentIndex = idx
-                        radioConfig.Frequency.Current = input
-                    end
                 end
-            end
-        end
-        
-        radioConfig.Controls.Input.Pressed = false
-        
-    end)
+                
+               
+          
+            radioConfig.Controls.Input.Pressed = false
+            
+    end
+   
 
     
 
